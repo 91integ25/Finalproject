@@ -1,25 +1,29 @@
+const path = require('path');
+
+
 module.exports = {
+  // the entry file for the bundle
+  entry: path.join(__dirname, '/client/src/app.jsx'),
 
-  // This code will be compiled
-  entry: "./app/App.js",
-
-  // Then output into this file
+  // the bundle file we will get in the result
   output: {
-    filename: "public/bundle.js"
+    path: path.join(__dirname, '/client/dist/js'),
+    filename: 'app.js',
   },
 
-  // This will be what we do
   module: {
-    loaders: [
-      {
-        test: /\.jsx?$/,
-        excluse: /(node_modules|bower_components)/,
-        loader: 'babel',
-        query: {
-          // These are the specific transformations we'll be using.
-          presets: ['react', 'es2015']
-        }
+
+    // apply loaders to files that meet given conditions
+    loaders: [{
+      test: /\.jsx?$/,
+      include: path.join(__dirname, '/client/src'),
+      loader: 'babel',
+      query: {
+        presets: ["react", "es2015"]
       }
-    ]
-  }
-}
+    }],
+  },
+
+  // start Webpack in a watch mode, so Webpack will rebuild the bundle on changes
+  watch: true
+};
