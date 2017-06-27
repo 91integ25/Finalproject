@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 
@@ -13,6 +14,7 @@ const Dashboard = ({ secretData }) => (
     />
 
     {secretData && <CardText style={{ fontSize: '16px', color: 'green' }}>{secretData}</CardText>}
+
     </Card>
 
     <TextField
@@ -24,7 +26,9 @@ const Dashboard = ({ secretData }) => (
     <TextField
       hintText="Education"
     /><br />
-
+    <div>
+    <RaisedButton type="submit" label="Submit"/>
+    </div>
   </div>
 
 );
