@@ -35246,6 +35246,10 @@
 
 	var _SignUpPage2 = _interopRequireDefault(_SignUpPage);
 
+	var _UserPage = __webpack_require__(474);
+
+	var _UserPage2 = _interopRequireDefault(_UserPage);
+
 	var _Auth = __webpack_require__(398);
 
 	var _Auth2 = _interopRequireDefault(_Auth);
@@ -35266,7 +35270,7 @@
 	    }
 	  }, {
 	    path: '/user',
-	    component: UserPage
+	    component: _UserPage2.default
 	  }, {
 	    path: '/login',
 	    component: _LoginPage2.default
@@ -43815,6 +43819,12 @@
 	};
 
 	exports.default = SignUpForm;
+
+/***/ }),
+/* 474 */
+/***/ (function(module, exports) {
+
+	"use strict";
 
 /***/ })
 /******/ ]);
