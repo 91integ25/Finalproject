@@ -41196,6 +41196,8 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRouter = __webpack_require__(339);
+
 	var _Card = __webpack_require__(400);
 
 	var _RaisedButton = __webpack_require__(459);
@@ -41209,7 +41211,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Dashboard = function Dashboard(_ref) {
-	  var secretData = _ref.secretData;
+	  var secretData = _ref.secretData,
+	      user = _ref.user;
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'container' },
@@ -41226,28 +41229,61 @@
 	        secretData
 	      )
 	    ),
-	    _react2.default.createElement(_TextField2.default, {
-	      hintText: 'First Name'
-	    }),
-	    _react2.default.createElement('br', null),
-	    _react2.default.createElement(_TextField2.default, {
-	      hintText: 'Last Name'
-	    }),
-	    _react2.default.createElement('br', null),
-	    _react2.default.createElement(_TextField2.default, {
-	      hintText: 'Education'
-	    }),
-	    _react2.default.createElement('br', null),
 	    _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement(_RaisedButton2.default, { type: 'submit', label: 'Submit' })
+	      'form',
+	      { action: '/' },
+	      _react2.default.createElement(
+	        'h2',
+	        { className: 'card-heading' },
+	        'Form'
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'field-line' },
+	        _react2.default.createElement(_TextField2.default, {
+	          floatingLabelText: 'First Name',
+	          name: 'firstName'
+	        })
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'field-line' },
+	        _react2.default.createElement(_TextField2.default, {
+	          floatingLabelText: 'Last Name',
+	          name: 'lastName'
+	        })
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'field-line' },
+	        _react2.default.createElement(_TextField2.default, {
+	          floatingLabelText: 'Education',
+	          name: 'education'
+	        })
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'button-line' },
+	        _react2.default.createElement(_RaisedButton2.default, { type: 'submit', label: 'Submit', primary: true })
+	      ),
+	      _react2.default.createElement(
+	        _Card.CardText,
+	        null,
+	        'Already Submitted Form? ',
+	        _react2.default.createElement(
+	          _reactRouter.Link,
+	          { to: '/#' },
+	          'Preview Website'
+	        ),
+	        '.'
+	      )
 	    )
 	  );
 	};
 
 	Dashboard.propTypes = {
 	  secretData: _react.PropTypes.string.isRequired
+
 	};
 
 	exports.default = Dashboard;
