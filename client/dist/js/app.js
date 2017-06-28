@@ -35265,6 +35265,9 @@
 	      }
 	    }
 	  }, {
+	    path: '/user',
+	    component: UserPage
+	  }, {
 	    path: '/login',
 	    component: _LoginPage2.default
 	  }, {
@@ -41272,7 +41275,7 @@
 	        'Already Submitted Form? ',
 	        _react2.default.createElement(
 	          _reactRouter.Link,
-	          { to: '/#' },
+	          { to: '/UserPage' },
 	          'Preview Website'
 	        ),
 	        '.'

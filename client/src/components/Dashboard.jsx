@@ -47,7 +47,7 @@ const Dashboard = ({
         <RaisedButton type="submit" label="Submit" primary />
       </div>
 
-      <CardText>Already Submitted Form? <Link to={'/#'}>Preview Website</Link>.</CardText>
+      <CardText>Already Submitted Form? <Link to={'/UserPage'}>Preview Website</Link>.</CardText>
     </form>
     {/* <TextField
       hintText="First Name"

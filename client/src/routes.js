@@ -23,6 +23,11 @@ const routes = {
     },
 
     {
+      path: '/user',
+      component: UserPage
+    },
+
+    {
       path: '/login',
       component: LoginPage
     },
