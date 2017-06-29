@@ -41136,14 +41136,20 @@
 	  /**
 	   * Class constructor.
 	   */
-	  function DashboardPage(props) {
+	  function DashboardPage(props, context) {
 	    _classCallCheck(this, DashboardPage);
 
-	    var _this = _possibleConstructorReturn(this, (DashboardPage.__proto__ || Object.getPrototypeOf(DashboardPage)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (DashboardPage.__proto__ || Object.getPrototypeOf(DashboardPage)).call(this, props, context));
 
 	    _this.state = {
-	      secretData: ''
+	      secretData: '',
+	      user: {
+	        firstName: '',
+	        lastName: '',
+	        education: ''
+	      }
 	    };
+	    _this.processForm = _this.processForm.bind(_this);
 	    return _this;
 	  }
 
@@ -41164,15 +41170,61 @@
 	      xhr.setRequestHeader('Authorization', 'bearer ' + _Auth2.default.getToken());
 	      xhr.responseType = 'json';
 	      xhr.addEventListener('load', function () {
-	        if (xhr.status === 200) {
+	        if (xhr.status) {
 	          _this2.setState({
-	            secretData: xhr.response.message
+	            secretData: xhr.response
 	          });
 	        }
 	      });
 	      xhr.send();
 	    }
+	  }, {
+	    key: 'processForm',
+	    value: function processForm(event) {
+	      var _this3 = this;
 
+	      // prevent default action. in this case, action is the form submission event
+	      event.preventDefault();
+
+	      // create a string for an HTTP body message
+	      var firstName = encodeURIComponent(this.state.user.firstName);
+	      var lastName = encodeURIComponent(this.state.user.lastName);
+	      var education = encodeURIComponent(this.state.user.education);
+	      var formData = 'firstname=' + firstName + '&lastName=' + lastName + '&education=' + education;
+
+	      // create an AJAX request
+	      var xhr = new XMLHttpRequest();
+	      xhr.open('post', '/api/user');
+	      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	      xhr.setRequestHeader('Authorization', 'bearer ' + _Auth2.default.getToken());
+	      xhr.responseType = 'json';
+	      xhr.addEventListener('load', function () {
+	        if (xhr.status === 200) {
+	          // success
+
+	          // change the component-container state
+	          _this3.setState({
+	            errors: {}
+	          });
+
+	          // set a message
+	          localStorage.setItem('successMessage', xhr.response.message);
+
+	          // make a redirect
+	          _this3.context.router.replace('/user');
+	        } else {
+	          // failure
+
+	          var errors = xhr.response.errors ? xhr.response.errors : {};
+	          errors.summary = xhr.response.message;
+
+	          _this3.setState({
+	            errors: errors
+	          });
+	        }
+	      });
+	      xhr.send(formData);
+	    }
 	    /**
 	     * Render the component.
 	     */
@@ -41180,7 +41232,11 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(_Dashboard2.default, { secretData: this.state.secretData });
+	      return _react2.default.createElement(_Dashboard2.default, {
+	        secretData: this.state.secretData,
+	        onSubmit: this.processForm,
+	        user: this.state.user
+	      });
 	    }
 	  }]);
 
@@ -41219,6 +41275,8 @@
 
 	var Dashboard = function Dashboard(_ref) {
 	  var secretData = _ref.secretData,
+	      onSubmit = _ref.onSubmit,
+	      onChange = _ref.onChange,
 	      user = _ref.user;
 	  return _react2.default.createElement(
 	    'div',
@@ -41238,7 +41296,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'form',
-	      { action: '/' },
+	      { action: '/user', onSubmit: onSubmit },
 	      _react2.default.createElement(
 	        'h2',
 	        { className: 'card-heading' },
@@ -41249,7 +41307,9 @@
 	        { className: 'field-line' },
 	        _react2.default.createElement(_TextField2.default, {
 	          floatingLabelText: 'First Name',
-	          name: 'firstName'
+	          name: 'firstName',
+	          onChange: onChange,
+	          value: user.firstName
 	        })
 	      ),
 	      _react2.default.createElement(
@@ -41257,7 +41317,9 @@
 	        { className: 'field-line' },
 	        _react2.default.createElement(_TextField2.default, {
 	          floatingLabelText: 'Last Name',
-	          name: 'lastName'
+	          name: 'lastName',
+	          onChange: onChange,
+	          value: user.lastName
 	        })
 	      ),
 	      _react2.default.createElement(
@@ -41265,7 +41327,9 @@
 	        { className: 'field-line' },
 	        _react2.default.createElement(_TextField2.default, {
 	          floatingLabelText: 'Education',
-	          name: 'education'
+	          name: 'education',
+	          onChange: onChange,
+	          value: user.education
 	        })
 	      ),
 	      _react2.default.createElement(
@@ -43822,9 +43886,54 @@
 
 /***/ }),
 /* 474 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var UserPage = function (_React$Component) {
+	  _inherits(UserPage, _React$Component);
+
+	  function UserPage() {
+	    _classCallCheck(this, UserPage);
+
+	    return _possibleConstructorReturn(this, (UserPage.__proto__ || Object.getPrototypeOf(UserPage)).apply(this, arguments));
+	  }
+
+	  _createClass(UserPage, [{
+	    key: "render",
+
+
+	    /**
+	     * Class constructor.
+	     */
+
+	    value: function render() {
+	      return "hello this is the UserPage";
+	    }
+	  }]);
+
+	  return UserPage;
+	}(_react2.default.Component);
+
+	exports.default = UserPage;
 
 /***/ })
 /******/ ]);

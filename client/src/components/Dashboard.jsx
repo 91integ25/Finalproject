@@ -7,7 +7,9 @@ import TextField from 'material-ui/TextField';
 
 const Dashboard = ({
   secretData,
-  user
+  onSubmit,
+  onChange,
+  user,
   }) => (
   <div className="container">
 
@@ -21,25 +23,31 @@ const Dashboard = ({
 
     </Card>
 
-    <form action="/">
+    <form action="/user" onSubmit={onSubmit}>
       <h2 className="card-heading">Form</h2>
 
       <div className="field-line">
         <TextField
           floatingLabelText="First Name"
           name="firstName"
+          onChange={onChange}
+          value={user.firstName}
         />
       </div>
       <div className="field-line">
         <TextField
           floatingLabelText="Last Name"
           name="lastName"
+          onChange={onChange}
+          value={user.lastName}
         />
       </div>
       <div className="field-line">
         <TextField
           floatingLabelText="Education"
           name="education"
+          onChange={onChange}
+          value={user.education}
         />
       </div>
 
@@ -49,18 +57,7 @@ const Dashboard = ({
 
       <CardText>Already Submitted Form? <Link to={'/UserPage'}>Preview Website</Link>.</CardText>
     </form>
-    {/* <TextField
-      hintText="First Name"
-    /><br />
-    <TextField
-      hintText="Last Name"
-    /><br />
-    <TextField
-      hintText="Education"
-    /><br />
-    <div>
-    <RaisedButton type="submit" label="Submit"/>
-    </div> */}
+
   </div>
 
 );
