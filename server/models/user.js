@@ -9,21 +9,10 @@ const UserSchema = new mongoose.Schema({
   },
   password: String,
   name: String,
-  bio: [{
-    firstName: {
-      type: String,
-      required: [true, 'First Name is required']
-    },
-    lastName: {
-      type: String,
-      required: [true, 'Last Name is required']
-    },
-    education: {
-      type: String,
-      required: [true, 'Education is required']
-    }
+  firstName: String,
+  lastName: String,
+  education: String
 
-  }]
 });
 
 

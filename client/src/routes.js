@@ -24,7 +24,7 @@ const routes = {
     },
 
     {
-      path: '/user',
+      path: '/bio',
       component: UserPage
     },
 

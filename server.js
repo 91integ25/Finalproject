@@ -18,8 +18,10 @@ app.use(passport.initialize());
 // load passport strategies
 const localSignupStrategy = require('./server/passport/local-signup');
 const localLoginStrategy = require('./server/passport/local-login');
+const localBioStrategy = require('./server/passport/local-bio');
 passport.use('local-signup', localSignupStrategy);
 passport.use('local-login', localLoginStrategy);
+passport.use('local-bio', localBioStrategy);
 
 // pass the authorization checker middleware
 const authCheckMiddleware = require('./server/middleware/auth-check');

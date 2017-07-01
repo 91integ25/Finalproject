@@ -75,6 +75,8 @@ function validateLoginForm(payload) {
   };
 }
 
+
+
 router.post('/signup', (req, res, next) => {
   const validationResult = validateSignupForm(req.body);
   if (!validationResult.success) {
@@ -146,6 +148,37 @@ router.post('/login', (req, res, next) => {
       token,
       user: userData
     });
+  })(req, res, next);
+});
+
+router.post('/bio', (req,res,next)=>{
+  console.log(req.body)
+    return passport.authenticate('local-bio', (err, token, userData) => {
+      console.log('passport.authenticate: winner')
+      console.log('userData: ', userData)
+    if (err) {
+      if (err.name === 'IncorrectCredentialsError') {
+        return res.status(400).json({
+          success: false,
+          message: err.message
+        });
+      }
+
+      return res.status(400).json({
+        success: false,
+        message: 'Could not process the form.'
+      });
+    }
+
+
+    return res.json({
+      success: true,
+      message: 'You returned',
+      token,
+      user: userData
+    });
+
+
   })(req, res, next);
 });
 

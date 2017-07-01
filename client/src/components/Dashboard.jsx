@@ -8,8 +8,6 @@ import TextField from 'material-ui/TextField';
 const Dashboard = ({
   secretData,
   onSubmit,
-  onChange,
-  user,
   }) => (
   <div className="container">
 
@@ -23,31 +21,28 @@ const Dashboard = ({
 
     </Card>
 
-    <form action="/user" onSubmit={onSubmit}>
+    <form formMethod="post"  onSubmit={onSubmit}>
       <h2 className="card-heading">Form</h2>
 
       <div className="field-line">
         <TextField
           floatingLabelText="First Name"
           name="firstName"
-          onChange={onChange}
-          value={user.firstName}
+
         />
       </div>
       <div className="field-line">
         <TextField
           floatingLabelText="Last Name"
           name="lastName"
-          onChange={onChange}
-          value={user.lastName}
+
         />
       </div>
       <div className="field-line">
         <TextField
           floatingLabelText="Education"
           name="education"
-          onChange={onChange}
-          value={user.education}
+
         />
       </div>
 
@@ -62,9 +57,9 @@ const Dashboard = ({
 
 );
 
-Dashboard.propTypes = {
-  secretData: PropTypes.string.isRequired,
-
-};
+// Dashboard.propTypes = {
+//   secretData: PropTypes.string.isRequired,
+//
+// };
 
 export default Dashboard;
