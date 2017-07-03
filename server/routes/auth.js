@@ -1,8 +1,11 @@
 const express = require('express');
 const validator = require('validator');
 const passport = require('passport');
+const User = require('mongoose').model('User');
 
 const router = new express.Router();
+
+let email = '';
 
 /**
  * Validate the sign up form
@@ -117,6 +120,7 @@ router.post('/signup', (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
   const validationResult = validateLoginForm(req.body);
+  email = req.body.email;
   if (!validationResult.success) {
     return res.status(400).json({
       success: false,
@@ -127,6 +131,7 @@ router.post('/login', (req, res, next) => {
 
 
   return passport.authenticate('local-login', (err, token, userData) => {
+    console.log('userData after auth: ',userData)
     if (err) {
       if (err.name === 'IncorrectCredentialsError') {
         return res.status(400).json({
@@ -152,34 +157,22 @@ router.post('/login', (req, res, next) => {
 });
 
 router.post('/bio', (req,res,next)=>{
-  console.log(req.body)
-    return passport.authenticate('local-bio', (err, token, userData) => {
-      console.log('passport.authenticate: winner')
-      console.log('userData: ', userData)
-    if (err) {
-      if (err.name === 'IncorrectCredentialsError') {
-        return res.status(400).json({
-          success: false,
-          message: err.message
-        });
+  console.log('req.body: ',req.body)
+  console.log('email: ', email)
+  User.findOne({ email: email }, (err, user) => {
+    user.firstName = req.body.firstName;
+    user.lastName = req.body.lastName;
+    user.education = req.body.education;
+
+    user.save(user, function(err){
+      if(err) {
+        console.log('ERROR!');
+      } else {
+        console.log('firstname',user.firstName)
+        console.log('saved');
       }
-
-      return res.status(400).json({
-        success: false,
-        message: 'Could not process the form.'
-      });
-    }
-
-
-    return res.json({
-      success: true,
-      message: 'You returned',
-      token,
-      user: userData
     });
-
-
-  })(req, res, next);
+  });
 });
 
 

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Auth from '../modules/Auth';
 import Dashboard from '../components/Dashboard.jsx';
-import LoginPage from './LoginPage.jsx';
+
 
 class DashboardPage extends React.Component {
 
@@ -65,7 +65,7 @@ class DashboardPage extends React.Component {
       if (xhr.status === 200) {
         // success
         console.log('hello world')
-        console.log(LoginPage)
+
         // change the component-container state
         this.setState({
           errors: {}
@@ -95,12 +95,11 @@ class DashboardPage extends React.Component {
    */
   render() {
     return (
+
       <Dashboard
         secretData={this.state.secretData}
         onSubmit={this.processForm}
-
       />
-
     );
   }
 
