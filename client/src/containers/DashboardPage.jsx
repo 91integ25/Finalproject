@@ -46,6 +46,28 @@ class DashboardPage extends React.Component {
     });
     xhr.send();
   }
+    uploadImage(imageFile) {
+      return new Promise((resolve, reject) => {
+        let imageFormData = new FormData();
+
+        imageFormData.append('imageFile', imageFile.target.files[0]);
+        
+        var xhr = new XMLHttpRequest();
+        
+        xhr.open('post', '/auth/upload', true);
+        
+        xhr.onload = function () {
+          if (this.status == 200) {
+            resolve(this.response);
+          } else {
+            reject(this.statusText);
+          }
+        };
+        
+        xhr.send(imageFormData);
+
+      });
+    }
 
     handleImageChange(e) {
     e.preventDefault();
@@ -64,86 +86,53 @@ class DashboardPage extends React.Component {
 
   }
 
-  processForm(e) {
+  processForm(event) {
 
 
     //prevent default action. in this case, action is the form submission event
-    e.preventDefault();
+    event.preventDefault();
 
+     //create a string for an HTTP body message
+    const firstName = encodeURIComponent(event.target.firstName.value);
+    const lastName = encodeURIComponent(event.target.lastName.value);
+    const education = encodeURIComponent(event.target.education.value);
+    const formData = `firstName=${firstName}&lastName=${lastName}&education=${education}`;
 
-    let file = e.target.profilePic.files[0];
+    //create an AJAX request
+    const xhr = new XMLHttpRequest();
+    xhr.open('post', '/auth/bio', true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.setRequestHeader('Authorization', `bearer ${Auth.getToken()}`);
+    xhr.responseType = 'json';
+    xhr.addEventListener('load', () => {
 
-    const formData = new FormData();
-    formData.append('firstName', e.target.firstName.value);
-    formData.append('lastName', e.target.lastName.value);
-    formData.append('education', e.target.education.value);
-    formData.append('file', file);
-    
-    fetch('/auth/bio',{
-      method: 'post',
-      headers: {
-      // 'Content-Type': 'multipart/form-data',
-      'Authorization': `bearer ${Auth.getToken()}`
-      },
-      body: formData
-    }).then((response) => {
-        console.log('fetch worked: ', response)
+      if (xhr.status === 200) {
+        // success
+        console.log('hello world')
 
-        // var tempArr = [];
-        //   for(var pair of formData.entries()) {
-        //     tempArr.push(pair[1]);
-        //   }
-      }).catch(err => {
-        console.log('error in fetch: ',err)
-      })
+        // change the component-container state
+        this.setState({
+          errors: {}
+        });
 
-    // for(var pair of formData.entries()) {
+        // set a message
+        localStorage.setItem('successMessage', xhr.response.message);
 
-    //     console.log(pair[0]+ ', '+ pair[1]); 
+        // make a redirect
+        // this.context.router.replace('/user');
+      } else {
+        // failure
 
-    // }
-    
-    //create a string for an HTTP body message
-    // const firstName = encodeURIComponent(event.target.firstName.value);
-    // const lastName = encodeURIComponent(event.target.lastName.value);
-    // const education = encodeURIComponent(event.target.education.value);
-    // const formData = `firstName=${firstName}&lastName=${lastName}&education=${education}`;
+        const errors = xhr.response.errors ? xhr.response.errors : {};
+        errors.summary = xhr.response.message;
 
-    // create an AJAX request
-    // const xhr = new XMLHttpRequest();
-    // xhr.open('post', '/auth/bio', true);
-    // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    // xhr.setRequestHeader('Authorization', `bearer ${Auth.getToken()}`);
-    // xhr.responseType = 'json';
-    // xhr.addEventListener('load', () => {
-
-    //   if (xhr.status === 200) {
-    //     // success
-    //     console.log('hello world')
-
-    //     // change the component-container state
-    //     this.setState({
-    //       errors: {}
-    //     });
-
-    //     // set a message
-    //     localStorage.setItem('successMessage', xhr.response.message);
-
-    //     // make a redirect
-    //     // this.context.router.replace('/user');
-    //   } else {
-    //     // failure
-
-    //     const errors = xhr.response.errors ? xhr.response.errors : {};
-    //     errors.summary = xhr.response.message;
-
-    //     this.setState({
+        this.setState({
           
-    //     });
-    //   }
-    // });
+        });
+      }
+    });
 
-    // xhr.send(formData);
+    xhr.send(formData);
   }
   /**
    * Render the component.
@@ -154,7 +143,7 @@ class DashboardPage extends React.Component {
       <Dashboard
         secretData={this.state.secretData}
         onSubmit={this.processForm}
-        onChange={this.handleImageChange}
+        onChange={this.uploadImage}
       />
     );
   }

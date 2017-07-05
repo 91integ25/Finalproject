@@ -161,10 +161,8 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/bio', upload.single('profilePic'), (req,res,next)=>{
+router.post('/bio', (req,res,next)=>{
   console.log('req.body: ',req.body)
-  console.log('req: ', req)
-  console.log('req.file: ',req.file)
   console.log('email: ', email)
   // User.findOne({ email: email }, (err, user) => {
   //   user.firstName = req.body.firstName;
@@ -182,5 +180,25 @@ router.post('/bio', upload.single('profilePic'), (req,res,next)=>{
   // });
 });
 
+router.post('/upload', (req, res) => {
+
+  let form = new multiparty.Form();
+
+  form.parse(req, (err, fields, files) => {
+
+    let {path: tempPath, originalFilename} = files.imageFile[0];
+    let newPath = "uploads/" + originalFilename;
+    console.log('originalFilename: ', originalFilename)
+    fs.readFile(tempPath, (err, data) => {
+      // make copy of image to new location
+      fs.writeFile(newPath, data, (err) => {
+        // delete temp image
+        fs.unlink(tempPath, () => {
+          res.send("File uploaded to: " + newPath);
+        });
+      }); 
+    }); 
+  })
+})
 
 module.exports = router;
