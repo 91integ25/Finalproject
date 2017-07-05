@@ -11,6 +11,7 @@ const router = new express.Router();
 
 
 let email = '';
+let newPath = '';
 
 /**
  * Validate the sign up form
@@ -162,22 +163,20 @@ router.post('/login', (req, res, next) => {
 });
 
 router.post('/bio', (req,res,next)=>{
-  console.log('req.body: ',req.body)
-  console.log('email: ', email)
-  // User.findOne({ email: email }, (err, user) => {
-  //   user.firstName = req.body.firstName;
-  //   user.lastName = req.body.lastName;
-  //   user.education = req.body.education;
+  User.findOne({ email: email }, (err, user) => {
+    user.firstName = req.body.firstName;
+    user.lastName = req.body.lastName;
+    user.education = req.body.education;
 
-  //   user.save(user, function(err){
-  //     if(err) {
-  //       console.log('ERROR!');
-  //     } else {
-  //       console.log('firstname',user.firstName)
-  //       console.log('saved');
-  //     }
-  //   });
-  // });
+    user.save(user, function(err){
+      if(err) {
+        console.log('ERROR!');
+      } else {
+        console.log('firstname',user.firstName)
+        console.log('saved');
+      }
+    });
+  });
 });
 
 router.post('/upload', (req, res) => {
@@ -188,6 +187,8 @@ router.post('/upload', (req, res) => {
 
     let {path: tempPath, originalFilename} = files.imageFile[0];
     let newPath = "uploads/" + originalFilename;
+    let splitName = originalFilename.toLowerCase().split('.');
+    console.log(splitName[1])
 
     fs.readFile(tempPath, (err, data) => {
       // make copy of image to new location
@@ -198,6 +199,32 @@ router.post('/upload', (req, res) => {
         });
       }); 
     }); 
+
+    if(splitName[1] === 'jpg' || splitName[1] === 'png' || splitName[1] ==='tiff' || splitName[1]==='jpeg' || splitName[1]==='gif') {
+    User.findOne({ email: email }, (err, user) => {
+    user.profilePic = newPath;
+
+    user.save(user, function(err){
+      if(err) {
+        console.log('ERROR!');
+      } else {
+        console.log('saved');
+      }
+    });
+    });
+    } else {
+      User.findOne({ email: email }, (err, user) => {
+      user.resume = newPath;
+
+      user.save(user, function(err){
+        if(err) {
+          console.log('ERROR!');
+        } else {
+          console.log('saved');
+        }
+      });
+    });
+    }
   })
 })
 
