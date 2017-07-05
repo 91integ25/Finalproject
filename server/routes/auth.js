@@ -2,8 +2,13 @@ const express = require('express');
 const validator = require('validator');
 const passport = require('passport');
 const User = require('mongoose').model('User');
+const multiparty = require('multiparty');
+const fs = require('fs');
+const multer  = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 const router = new express.Router();
+
 
 let email = '';
 
@@ -156,23 +161,25 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/bio', (req,res,next)=>{
+router.post('/bio', upload.single('profilePic'), (req,res,next)=>{
   console.log('req.body: ',req.body)
+  console.log('req: ', req)
+  console.log('req.file: ',req.file)
   console.log('email: ', email)
-  User.findOne({ email: email }, (err, user) => {
-    user.firstName = req.body.firstName;
-    user.lastName = req.body.lastName;
-    user.education = req.body.education;
+  // User.findOne({ email: email }, (err, user) => {
+  //   user.firstName = req.body.firstName;
+  //   user.lastName = req.body.lastName;
+  //   user.education = req.body.education;
 
-    user.save(user, function(err){
-      if(err) {
-        console.log('ERROR!');
-      } else {
-        console.log('firstname',user.firstName)
-        console.log('saved');
-      }
-    });
-  });
+  //   user.save(user, function(err){
+  //     if(err) {
+  //       console.log('ERROR!');
+  //     } else {
+  //       console.log('firstname',user.firstName)
+  //       console.log('saved');
+  //     }
+  //   });
+  // });
 });
 
 

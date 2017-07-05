@@ -11,7 +11,9 @@ const UserSchema = new mongoose.Schema({
   name: String,
   firstName: String,
   lastName: String,
-  education: String
+  education: String,
+  img:
+    { data: Buffer, contentType: String}
 
 });
 

@@ -8,6 +8,7 @@ import TextField from 'material-ui/TextField';
 const Dashboard = ({
   secretData,
   onSubmit,
+  onChange,
   }) => (
   <div className="container">
 
@@ -21,7 +22,7 @@ const Dashboard = ({
 
     </Card>
 
-    <form formMethod="post"  onSubmit={onSubmit}>
+    <form formMethod="post" action="/auth/bio" onSubmit={onSubmit} encType="multipart/form-data">
       <h2 className="card-heading">Form</h2>
 
       <div className="field-line">
@@ -38,6 +39,7 @@ const Dashboard = ({
 
         />
       </div>
+
       <div className="field-line">
         <TextField
           floatingLabelText="Education"
@@ -45,6 +47,12 @@ const Dashboard = ({
 
         />
       </div>
+
+      <RaisedButton
+         containerElement="label" // <-- Just add me!
+         label="My Profile Pic">
+         <input type="file" name="profilePic" onChange={onChange}/>
+      </RaisedButton>
 
       <div className="button-line">
         <RaisedButton type="submit" label="Submit" primary />

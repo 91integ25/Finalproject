@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const config = require('./config');
 
+
 // connect to the database and load models
 require('./server/models').connect(config.dbUri);
 
@@ -18,10 +19,8 @@ app.use(passport.initialize());
 // load passport strategies
 const localSignupStrategy = require('./server/passport/local-signup');
 const localLoginStrategy = require('./server/passport/local-login');
-const localBioStrategy = require('./server/passport/local-bio');
 passport.use('local-signup', localSignupStrategy);
 passport.use('local-login', localLoginStrategy);
-passport.use('local-bio', localBioStrategy);
 
 // pass the authorization checker middleware
 const authCheckMiddleware = require('./server/middleware/auth-check');

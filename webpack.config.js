@@ -24,6 +24,9 @@ module.exports = {
     }],
   },
 
+  node: {
+    fs: 'empty'
+  },
   // start Webpack in a watch mode, so Webpack will rebuild the bundle on changes
   watch: true, 
   devtool: "eval-source-map"
