@@ -54,6 +54,12 @@ const Dashboard = ({
          <input type="file" name="profilePic" onChange={onChange}/>
       </RaisedButton>
 
+      <RaisedButton
+         containerElement="label" // <-- Just add me!
+         label="Resume">
+         <input type="file" name="resume" onChange={onChange}/>
+      </RaisedButton>
+
       <div className="button-line">
         <RaisedButton type="submit" label="Submit" primary />
       </div>

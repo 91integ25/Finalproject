@@ -188,7 +188,7 @@ router.post('/upload', (req, res) => {
 
     let {path: tempPath, originalFilename} = files.imageFile[0];
     let newPath = "uploads/" + originalFilename;
-    console.log('originalFilename: ', originalFilename)
+
     fs.readFile(tempPath, (err, data) => {
       // make copy of image to new location
       fs.writeFile(newPath, data, (err) => {
