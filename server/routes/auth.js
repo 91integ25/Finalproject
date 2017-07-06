@@ -11,8 +11,6 @@ const router = new express.Router();
 
 
 let email = '';
-let newPath = '';
-
 /**
  * Validate the sign up form
  *
@@ -172,7 +170,6 @@ router.post('/bio', (req,res,next)=>{
       if(err) {
         console.log('ERROR!');
       } else {
-        console.log('firstname',user.firstName)
         console.log('saved');
       }
     });
@@ -188,7 +185,6 @@ router.post('/upload', (req, res) => {
     let {path: tempPath, originalFilename} = files.imageFile[0];
     let newPath = "uploads/" + originalFilename;
     let splitName = originalFilename.toLowerCase().split('.');
-    console.log(splitName[1])
 
     fs.readFile(tempPath, (err, data) => {
       // make copy of image to new location

@@ -9,8 +9,4 @@ router.get('/dashboard', (req, res) => {
   res.json('winner');
 });
 
-router.get('/upload', (req, res) => {
-  console.log(req.body)
-});
-
 module.exports = router;

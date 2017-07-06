@@ -133,6 +133,7 @@ class DashboardPage extends React.Component {
     });
 
     xhr.send(formData);
+    this.context.router.replace('/BioPage');
   }
   /**
    * Render the component.
@@ -149,5 +150,9 @@ class DashboardPage extends React.Component {
   }
 
 }
+
+DashboardPage.contextTypes = {
+  router: PropTypes.object.isRequired
+};
 
 export default DashboardPage;
