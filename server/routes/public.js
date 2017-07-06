@@ -19,8 +19,12 @@ router.get('/biopage', (req, res) => {
             }
             user.email = null;
             user.password = null;
-            picLoc = user.profilePic;
-            console.log(picLoc)
+            // user.profilePic = '../../../' + user.profilePic;
+            // fs.readFile(user.profilePic, function(err, content){
+            //     user.profilePic = content;
+            //     res.status(200).json(user);
+            // })
+    
             res.status(200).json(user);
 
         })

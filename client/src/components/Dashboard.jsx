@@ -22,7 +22,7 @@ const Dashboard = ({
 
     </Card>
 
-    <form formMethod="post" action="/auth/bio" onSubmit={onSubmit} encType="multipart/form-data">
+    <form formMethod="post" onSubmit={onSubmit} >
       <h2 className="card-heading">Form</h2>
 
       <div className="field-line">
