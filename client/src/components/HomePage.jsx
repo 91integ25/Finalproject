@@ -1,11 +1,15 @@
-import React from 'react';
-import { Card, CardTitle } from 'material-ui/Card';
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import Slider from 'react-slick'
 
+import SimpleSlider from './SimpleSlider.jsx'
+import Cards from './Cards.jsx'
 
 const HomePage = () => (
-  <Card className="container">
-    <CardTitle title="BioBuild" subtitle="Build your own website with just one click." />
-  </Card>
-);
+  <div>
+  <SimpleSlider />,
+  <Cards />
+  </div>
+  );
 
 export default HomePage;
